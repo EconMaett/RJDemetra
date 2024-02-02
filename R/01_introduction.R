@@ -1,6 +1,6 @@
 # 01 - RJDemetra - Introduction ----
 
-# The R package is available on:
+# The RJDemetra R package is available on:
 # - CRAN: https://cran.r-project.org/package=RJDemetra
 # - GitHub: https://github.com/jdemetra/rjdemetra
 # - Website: https://jdemetra.github.io/rjdemetra/
@@ -12,30 +12,33 @@
 
 # Installation manual: https://github.com/jdemetra/rjdemetra/wiki/Installation-manual
 
-# To use `RJDemetra`, you need Java 8 or higher.
+# Call `utils::sessionInfo()` to see which version of R you have installed
+sessionInfo()
+# I use the 64-bit version on Windows 11
 
-# Install this R version from a reliable source.
-# https://www.java.com/download/ie_manual.jsp
+# Call `usethis::edit_r_environ()` to open your `.Renviron` file.
 
-# Get the path to Java
+# Save the path to the Java Development Kit (`jdk`) as an 
+# environment variable called "JAVA_HOME".
+
+# Then restart your R session
+
+# Check if it worked
 Sys.getenv("JAVA_HOME")
-
-# Save this in your .Renviron file
-usethis::edit_r_environ()
-
-# Restart R
 
 # install.packages("rJava")
 library(rJava)
+# No error!
 
 .jinit()
 .jcall("java/lang/System", "S", "getProperty", "java.runtime.version")
-# "1.8.0_401-b10"
+# "21.0.2+13-LTS-58"
 
 # install.packages("RJDemetra")
 library(RJDemetra)
 
 citation("RJDemetra")
+
 
 ## Basic example ----
 
@@ -43,7 +46,7 @@ citation("RJDemetra")
 # use either the `x13()` function for the X-13-ARIMA method or
 # the `tramoseats()` function for the TRAMO-SEATS method.
 
-str(ipi_c_eu)
+colnames(ipi_c_eu)
 
 my_series <- ipi_c_eu[ , "FR"]
 
@@ -60,14 +63,14 @@ ts_model
 
 # Basic plot with the original series, the trend and the 
 # seasonally-adjusted (SA) series
-plot(x13_model, type_chart = "sa-trend")
 png(filename = "figures/01_fr-ipi-sa.png", height = 400, width = 800)
+plot(x13_model, type_chart = "sa-trend")
 dev.off()
 
 
 # S-I ratio
-plot(x13_model$decomposition)
 png(filename = "figures/02_fr-ipi-siratio.png", height = 400, width = 800)
+plot(x13_model$decomposition)
 dev.off()
 
 # END
